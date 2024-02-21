@@ -3,32 +3,33 @@
 
 void insertionSortSquareBrakets(std::vector<int> & arr) {
 	for (int i = 1; i < arr.size(); i++) {
-		for (int j = i; j > 0; j--) {
-			if (arr[j - 1] > arr[j]) {
-				std::swap(arr[j - 1], arr[j]);
-			}
+		int j = i;
+		while (j > 0 && arr[j] < arr[j - 1]) {
+			std::swap(arr[j], arr[j - 1]);
+			j--;
 		}
 	}
 }
 
 void insertionSortAtOperator(std::vector<int>& arr) {
 	for (int i = 1; i < arr.size(); i++) {
-		for (int j = i; j > 0; j--) {
-			if (arr.at(j-1) > arr.at(j)) {
-				std::swap(arr.at(j-1), arr.at(j));
-			}
+		int j = i;
+		while (j > 0 && arr.at(j) < arr.at(j - 1)) {
+			std::swap(arr.at(j), arr.at(j - 1));
+			j--;
 		}
 	}
 }
 
+
 void insertionSortIterator(std::vector<int>& arr) {
-	std::vector<int>::iterator current = arr.begin()+1;
+	std::vector<int>::iterator current = arr.begin() + 1;
 	std::vector<int>::iterator temp;
 	for (current; current < arr.end(); current.operator++()) {
-		for (temp = current; temp > arr.begin(); temp.operator--()) {
-			if (*(temp-1) > *temp) {
-				std::swap(*temp, *(temp-1));
-			}
+		temp = current;
+		while (temp > arr.begin() && *(temp - 1) > *temp) {
+			std::swap(*temp, *(temp - 1));
+			temp.operator--();
 		}
 	}
 }
