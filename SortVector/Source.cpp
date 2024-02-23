@@ -1,6 +1,8 @@
 #include<iostream>
 #include<vector>
 #include<fstream>
+#include<chrono>
+#include<algorithm>
 
 std::vector<int> readVectorFromFile(std::string fileName) {
 	std::ifstream file("input.txt");
@@ -68,11 +70,33 @@ int main(int argc, char* argv[]) {
 	std::vector<int> arr1 = {12, 4, -5, 1, 0};
 	std::vector<int> arr2 = arr1;
 	std::vector<int> arr3 = readVectorFromFile(inputFile);
+	std::vector<int> arr4 = arr1;
+	std::chrono::steady_clock::time_point start;
+	std::chrono::steady_clock::time_point end;
+
+	start = std::chrono::steady_clock::now();
 	insertionSortSquareBrakets(arr1);
-	insertionSortAtOperator(arr2);
-	insertionSortIterator(arr3);
+	end = std::chrono::steady_clock::now();
 	printVector(arr1);
+	std::cout << "Insertion sort with brakets access: " << (end-start).count() << " s." << std::endl;
+
+	start = std::chrono::steady_clock::now();
+	insertionSortAtOperator(arr2);
+	end = std::chrono::steady_clock::now();
 	printVector(arr2);
+	std::cout << "Insertion sort with at access: " << (end - start).count() << " s." << std::endl;
+
+	start = std::chrono::steady_clock::now();
+	insertionSortIterator(arr3);
+	end = std::chrono::steady_clock::now();
 	printVector(arr3);
+	std::cout << "Insertion sort with iterator access: " << (end - start).count() << " s." << std::endl;
+
+	start = std::chrono::steady_clock::now();
+	std::sort(arr4.begin(), arr4.end());
+	end = std::chrono::steady_clock::now();
+	printVector(arr4);
+	std::cout << "Built-in std::sort : " << (end - start).count() << " s." << std::endl;
+
 	return 0;
 }
