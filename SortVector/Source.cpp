@@ -1,73 +1,8 @@
-#include<iostream>
-#include<vector>
-#include<fstream>
+#include"FillFunctions.h"
+#include"InsertionSort.h"
 #include<chrono>
 #include<algorithm>
-
-std::vector<int> readVectorFromFile(std::string fileName) {
-	std::ifstream file("input.txt");
-	if (!file.is_open()) {
-		std::cout << "Can not open the file" << std::endl;
-		std::vector<int> vec;
-		return vec;
-	}
-	std::vector<int> vec{ std::istream_iterator<int>(file), std::istream_iterator<int>() };
-	file.close();
-	return vec;
-}
-
-std::vector<int> fillFromCin() {
-	int num;
-	std::vector<int> vec;
-	while (std::cin >> num && num != 0) {
-		vec.push_back(num);
-	}
-	return vec;
-}
-
-//std::vector<int> fillRandom(double* array, int size) {
-//
-//}
-
-void insertionSortSquareBrakets(std::vector<int> & arr) {
-	if (arr.size() > 1) {
-		for (int i = 1; i < arr.size(); i++) {
-			int j = i;
-			while (j > 0 && arr[j] < arr[j - 1]) {
-				std::swap(arr[j], arr[j - 1]);
-				j--;
-			}
-		}
-	}
-}
-
-void insertionSortAtOperator(std::vector<int>& arr) {
-	if (arr.size() > 1) {
-		for (int i = 1; i < arr.size(); i++) {
-			int j = i;
-			while (j > 0 && arr.at(j) < arr.at(j - 1)) {
-				std::swap(arr.at(j), arr.at(j - 1));
-				j--;
-			}
-		}
-	}
-}
-
-
-void insertionSortIterator(std::vector<int>& arr) {
-	if (arr.size() > 1) {
-		std::vector<int>::iterator current = arr.begin() + 1;
-		std::vector<int>::iterator temp;
-		for (current; current != arr.end(); ++current) {
-			temp = current;
-			while (temp != arr.begin() && *(temp - 1) > *temp) {
-				std::swap(*temp, *(temp - 1));
-				--temp;
-			}
-		}
-	}
-}
-
+#include<iostream>
 
 void printVector(const std::vector<int>& arr) {
 	std::vector<int>::const_iterator element = arr.begin();
@@ -80,40 +15,70 @@ void printVector(const std::vector<int>& arr) {
 
 int main(int argc, char* argv[]) {
 	std::string inputFile = "input.txt";
-	std::vector<int> arr1 = {12, 4, -5, 1, 0};
-	std::vector<int> arr2 = arr1;
-	std::vector<int> arr3 = readVectorFromFile(inputFile);
-	std::vector<int> arr4 = arr1;
-	std::vector<int> arr5;
+	std::vector<int> vec1 = {12, 4, -5, 1, 0};
+	std::vector<int> vec2 = vec1;
+	//Чтение вектора из файла
+	std::vector<int> vec3 = fillFromFile(inputFile);
+	std::vector<int> vec4 = vec1;
+	std::vector<int> vec5;
 	std::chrono::steady_clock::time_point start;
 	std::chrono::steady_clock::time_point end;
 
+	//Сортировка вставками с использованием оператора доступа к элементам []
 	start = std::chrono::steady_clock::now();
-	insertionSortSquareBrakets(arr1);
+	insertionSortSquareBrakets(vec1);
 	end = std::chrono::steady_clock::now();
-	printVector(arr1);
+	printVector(vec1);
 	std::cout << "Insertion sort with brakets access: " << (end-start).count() << " s." << std::endl;
 
+	//Сортировка вставками с использованием оператора доступа at()
 	start = std::chrono::steady_clock::now();
-	insertionSortAtOperator(arr2);
+	insertionSortAtOperator(vec2);
 	end = std::chrono::steady_clock::now();
-	printVector(arr2);
+	printVector(vec2);
 	std::cout << "Insertion sort with at access: " << (end - start).count() << " s." << std::endl;
 
+	//Сортировка вставками с доступом по итераторам
 	start = std::chrono::steady_clock::now();
-	insertionSortIterator(arr3);
+	insertionSortIterator(vec3);
 	end = std::chrono::steady_clock::now();
-	printVector(arr3);
+	printVector(vec3);
 	std::cout << "Insertion sort with iterator access: " << (end - start).count() << " s." << std::endl;
 
+	//Встроенная сортировка
 	start = std::chrono::steady_clock::now();
-	std::sort(arr4.begin(), arr4.end());
+	std::sort(vec4.begin(), vec4.end());
 	end = std::chrono::steady_clock::now();
-	printVector(arr4);
+	printVector(vec4);
 	std::cout << "Built-in std::sort : " << (end - start).count() << " s." << std::endl;
 
-	arr5 = fillFromCin();
-	printVector(arr5);
+	//Чтение элементов в вектор из стандартного потока ввода
+	std::cout << "Print elements to insert into the vector. 0 is \"end of input\" character." << std::endl;
+	vec5 = fillFromCin();
+	printVector(vec5);
+
+	//Заполнение вектора псевдослучайными числами в диапазоне [-1, 1]
+	std::vector<int> sizes = { 5, 10, 25, 50, 100 };
+
+	for (int size : sizes) {
+		std::vector<double> vec6(size);
+		fillRandom(vec6.data(), size);
+
+		std::cout << "Random-filled vector before sorting:" << std::endl;
+		for (double val : vec6) {
+			std::cout << val << " ";
+		}
+		std::cout << std::endl;
+
+		insertionSortSquareBrakets(vec6);
+
+		std::cout << "Random-filled vector after sorting:" << std::endl;
+		for (double val : vec6) {
+			std::cout << val << " ";
+		}
+		std::cout << std::endl;
+	}
+
 
 	return 0;
 }
