@@ -1,4 +1,4 @@
 ﻿  Source.cpp
-C:\Users\alina\source\repos\SortVector\SortVector\Source.cpp(19,21): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\alina\source\repos\SortVector\SortVector\Source.cpp(31,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\alina\source\repos\SortVector\SortVector\Source.cpp(34,21): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\alina\source\repos\SortVector\SortVector\Source.cpp(46,21): warning C4018: <: несоответствие типов со знаком и без знака
   SortVector.vcxproj -> C:\Users\alina\source\repos\SortVector\Debug\SortVector.exe

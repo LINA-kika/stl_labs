@@ -16,6 +16,19 @@ std::vector<int> readVectorFromFile(std::string fileName) {
 	return vec;
 }
 
+std::vector<int> fillFromCin() {
+	int num;
+	std::vector<int> vec;
+	while (std::cin >> num && num != 0) {
+		vec.push_back(num);
+	}
+	return vec;
+}
+
+//std::vector<int> fillRandom(double* array, int size) {
+//
+//}
+
 void insertionSortSquareBrakets(std::vector<int> & arr) {
 	if (arr.size() > 1) {
 		for (int i = 1; i < arr.size(); i++) {
@@ -45,11 +58,11 @@ void insertionSortIterator(std::vector<int>& arr) {
 	if (arr.size() > 1) {
 		std::vector<int>::iterator current = arr.begin() + 1;
 		std::vector<int>::iterator temp;
-		for (current; current < arr.end(); current.operator++()) {
+		for (current; current != arr.end(); ++current) {
 			temp = current;
-			while (temp > arr.begin() && *(temp - 1) > *temp) {
+			while (temp != arr.begin() && *(temp - 1) > *temp) {
 				std::swap(*temp, *(temp - 1));
-				temp.operator--();
+				--temp;
 			}
 		}
 	}
@@ -58,7 +71,7 @@ void insertionSortIterator(std::vector<int>& arr) {
 
 void printVector(const std::vector<int>& arr) {
 	std::vector<int>::const_iterator element = arr.begin();
-		for (element; element < arr.end(); element.operator++()) {
+		for (element; element != arr.end(); element.operator++()) {
 			std::cout << *element << " ";
 	}
 		std::cout << std::endl;
@@ -71,6 +84,7 @@ int main(int argc, char* argv[]) {
 	std::vector<int> arr2 = arr1;
 	std::vector<int> arr3 = readVectorFromFile(inputFile);
 	std::vector<int> arr4 = arr1;
+	std::vector<int> arr5;
 	std::chrono::steady_clock::time_point start;
 	std::chrono::steady_clock::time_point end;
 
@@ -97,6 +111,9 @@ int main(int argc, char* argv[]) {
 	end = std::chrono::steady_clock::now();
 	printVector(arr4);
 	std::cout << "Built-in std::sort : " << (end - start).count() << " s." << std::endl;
+
+	arr5 = fillFromCin();
+	printVector(arr5);
 
 	return 0;
 }
